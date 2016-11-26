@@ -3,8 +3,14 @@
 
 #include "Piece.hpp"
 #include <stddef.h>
+#include <string>
 
 class Piece;
+
+enum SquareShade {
+	LIGHT,
+	DARK
+};
 
 class Square {
 private:
@@ -16,7 +22,9 @@ public:
 	char getFile();
 	char getRank();
 	Piece* getPiece();
-	bool hasPiece();
+	SquareShade getShade();
+	std::string symbol();
+	bool isOccupied();
 	bool onBoard();
 };
 

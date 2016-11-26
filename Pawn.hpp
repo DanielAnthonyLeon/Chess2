@@ -6,6 +6,7 @@
 class Pawn : public Piece {
 public:
 	Pawn(char file, int rank, Board *board, PieceColour colour);
+	std::string symbol();
 	void setSquaresInRange();
 };
 

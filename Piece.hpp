@@ -4,6 +4,7 @@
 #include "Square.hpp"
 #include "Board.hpp"
 #include <vector>
+#include <string>
 
 class Square;
 class Board;
@@ -34,6 +35,7 @@ public:
 	Piece(char file, int rank, Board *board, PieceType type, PieceColour colour);
 	PieceType getType();
 	PieceColour getColour();
+	virtual std::string symbol() = 0;
 	int colourIncrement();
 	virtual void setSquaresInRange() = 0;
 };

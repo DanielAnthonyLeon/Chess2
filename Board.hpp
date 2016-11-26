@@ -3,6 +3,7 @@
 
 #include "Square.hpp"
 #include <string>
+#include <iostream>
 
 class Square;
 
@@ -12,7 +13,8 @@ private:
 public:
 	Board();
 	~Board();
-	Square* getSquare(char file, int rank);
+	Square* getSquare(char file, int rank) const;
+	friend std::ostream& operator<<(std::ostream& out, const Board& b);
 };
 
 #endif /* Board_hpp */

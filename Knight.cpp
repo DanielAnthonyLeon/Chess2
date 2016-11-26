@@ -6,6 +6,10 @@ Piece(file, rank, board, KNIGHT, colour)
 	
 }
 
+std::string Knight::symbol() {
+	return m_colour == WHITE ? "♘" : "♞";
+}
+
 void Knight::setSquaresInRange() {
 	Square *upLeft = m_board->getSquare(m_rank+2, m_file-1);
 	Square *upRight = m_board->getSquare(m_rank+2, m_file+1);
@@ -19,7 +23,7 @@ void Knight::setSquaresInRange() {
 		// Square is actually on board
 	if (upLeft) {
 			// Square is empty
-		if (!upLeft->hasPiece()) {
+		if (!upLeft->isOccupied()) {
 			m_squaresInRange.push_back(upLeft);
 		}
 			// Piece is opposite colour
@@ -28,7 +32,7 @@ void Knight::setSquaresInRange() {
 		}
 	}
 	if (upRight) {
-		if (!upRight->hasPiece()) {
+		if (!upRight->isOccupied()) {
 			m_squaresInRange.push_back(upRight);
 		}
 		else if (upRight->getPiece()->getColour() != m_colour) {
@@ -36,7 +40,7 @@ void Knight::setSquaresInRange() {
 		}
 	}
 	if (downLeft) {
-		if (!downLeft->hasPiece()) {
+		if (!downLeft->isOccupied()) {
 			m_squaresInRange.push_back(downLeft);
 		}
 		else if (downLeft->getPiece()->getColour() != m_colour) {
@@ -44,7 +48,7 @@ void Knight::setSquaresInRange() {
 		}
 	}
 	if (downRight) {
-		if (!downRight->hasPiece()) {
+		if (!downRight->isOccupied()) {
 			m_squaresInRange.push_back(downRight);
 		}
 		else if (upRight->getPiece()->getColour() != m_colour) {
@@ -52,7 +56,7 @@ void Knight::setSquaresInRange() {
 		}
 	}
 	if (rightUp) {
-		if (!rightUp->hasPiece()) {
+		if (!rightUp->isOccupied()) {
 			m_squaresInRange.push_back(rightUp);
 		}
 		else if (rightUp->getPiece()->getColour() != m_colour) {
@@ -60,7 +64,7 @@ void Knight::setSquaresInRange() {
 		}
 	}
 	if (rightDown) {
-		if (!upRight->hasPiece()) {
+		if (!upRight->isOccupied()) {
 			m_squaresInRange.push_back(rightDown);
 		}
 		else if (rightDown->getPiece()->getColour() != m_colour) {
@@ -68,7 +72,7 @@ void Knight::setSquaresInRange() {
 		}
 	}
 	if (leftUp) {
-		if (!upRight->hasPiece()) {
+		if (!upRight->isOccupied()) {
 			m_squaresInRange.push_back(leftUp);
 		}
 		else if (leftUp->getPiece()->getColour() != m_colour) {
@@ -76,7 +80,7 @@ void Knight::setSquaresInRange() {
 		}
 	}
 	if (leftDown) {
-		if (!leftDown->hasPiece()) {
+		if (!leftDown->isOccupied()) {
 			m_squaresInRange.push_back(leftDown);
 		}
 		else if (leftDown->getPiece()->getColour() != m_colour) {

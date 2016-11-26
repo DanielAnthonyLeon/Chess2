@@ -20,7 +20,25 @@ Piece* Square::getPiece() {
 	return m_piece;
 }
 
-bool Square::hasPiece() {
+SquareShade Square::getShade() {
+	if ((m_file-'a') + m_rank % 2 == 0) {
+		return LIGHT;
+	}
+	else {
+		return DARK;
+	}
+}
+
+std::string Square::symbol() {
+	if (getPiece() == NULL) {
+		return getShade() == LIGHT ? " " : "#";
+	}
+	else {
+		return getPiece()->symbol();
+	}
+}
+
+bool Square::isOccupied() {
 	return m_piece != NULL;
 }
 

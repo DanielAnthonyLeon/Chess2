@@ -6,6 +6,7 @@
 class Knight : public Piece {
 public:
 	Knight(char file, int rank, Board *board, PieceColour colour);
+	std::string symbol();
 	void setSquaresInRange();
 };
 
