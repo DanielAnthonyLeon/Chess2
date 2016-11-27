@@ -1,8 +1,9 @@
 #include "Square.hpp"
 
-Square::Square(char file, int rank, Piece *piece) :
+Square::Square(char file, int rank, Board *board, Piece *piece) :
 m_file(file),
 m_rank(rank),
+m_board(board),
 m_piece(piece)
 {
 	
@@ -14,6 +15,10 @@ char Square::getFile() {
 
 char Square::getRank() {
 	return m_rank;
+}
+
+Board* Square::getBoard() {
+	return m_board;
 }
 
 Piece* Square::getPiece() {
@@ -30,7 +35,8 @@ SquareShade Square::getShade() {
 }
 
 std::string Square::symbol() {
-	if (getPiece() == NULL) {
+		// Square is unoccupied
+	if (!isOccupied()) {
 		return getShade() == LIGHT ? " " : "#";
 	}
 	else {

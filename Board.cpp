@@ -3,7 +3,7 @@
 Board::Board() {
 	for (char file = 'a'; file <= 'h'; file++) {
 		for (int rank = 1; rank <= 8; rank++) {
-			m_board[8-rank][file-'a'] = new Square(file, rank);
+			m_board[8-rank][file-'a'] = new Square(file, rank, this);
 		}
 	}
 }

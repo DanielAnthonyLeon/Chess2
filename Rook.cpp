@@ -1,7 +1,7 @@
 #include "Rook.hpp"
 
-Rook::Rook(char file, int rank, Board *board, PieceColour colour) :
-Piece(file, rank, board, ROOK, colour)
+Rook::Rook(Square *square, PieceColour colour) :
+Piece(square, ROOK, colour)
 {
 	
 }
@@ -11,8 +11,12 @@ std::string Rook::symbol() {
 }
 
 void Rook::setSquaresInRange() {
-	for (int i = -7; i < 7; i++) {
-		Square *s = m_board->getSquare(m_file+i, m_rank);
+	Board *board = getSquare()->getBoard();
+	char file = getSquare()->getFile();
+	int rank = getSquare()->getRank();
+	
+	for (int i = 1; i <= 7 ; i++) {
+		Square *s = board->getSquare(file+i, rank);
 			// Square is on board
 		if (s) {
 				// Square is unoccupied
@@ -22,18 +26,74 @@ void Rook::setSquaresInRange() {
 				// Square is occupied by opposite coloured piece
 			else if (s->getPiece()->getColour() != m_colour) {
 				m_squaresInRange.push_back(s);
+					// Rook cannot proceed any further
+				break;
+			}
+				// Square is occupied by same coloured piece
+			else {
+				break;
 			}
 		}
+			// Rook is off the board
+		else {
+			break;
+		}
 	}
-	for (int i = -7; i < 7; i++) {
-		Square *s = m_board->getSquare(m_file, m_rank+i);
+	
+	for (int i = 1; i <= 7 ; i++) {
+		Square *s = board->getSquare(file, rank+i);
 		if (s) {
 			if (!s->isOccupied()) {
 				m_squaresInRange.push_back(s);
 			}
 			else if (s->getPiece()->getColour() != m_colour) {
 				m_squaresInRange.push_back(s);
+				break;
 			}
+			else {
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	}
+	
+	for (int i = 1; i <= 7 ; i++) {
+		Square *s = board->getSquare(file-i, rank);
+		if (s) {
+			if (!s->isOccupied()) {
+				m_squaresInRange.push_back(s);
+			}
+			else if (s->getPiece()->getColour() != m_colour) {
+				m_squaresInRange.push_back(s);
+				break;
+			}
+			else {
+				break;
+			}
+		}
+		else {
+			break;
+		}
+	}
+	
+	for (int i = 1; i <= 7 ; i++) {
+		Square *s = board->getSquare(file, rank-i);
+		if (s) {
+			if (!s->isOccupied()) {
+				m_squaresInRange.push_back(s);
+			}
+			else if (s->getPiece()->getColour() != m_colour) {
+				m_squaresInRange.push_back(s);
+				break;
+			}
+			else {
+				break;
+			}
+		}
+		else {
+			break;
 		}
 	}
 }

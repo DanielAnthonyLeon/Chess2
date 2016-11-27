@@ -2,12 +2,10 @@
 #define Piece_hpp
 
 #include "Square.hpp"
-#include "Board.hpp"
 #include <vector>
 #include <string>
 
 class Square;
-class Board;
 
 enum PieceType {
 	PAWN,
@@ -25,14 +23,13 @@ enum PieceColour {
 
 class Piece {
 protected:
-	char m_file;
-	int m_rank;
-	Board *m_board;
+	Square *m_square;
 	PieceType m_type;
 	PieceColour m_colour;
 	std::vector<Square*> m_squaresInRange;
 public:
-	Piece(char file, int rank, Board *board, PieceType type, PieceColour colour);
+	Piece(Square *square, PieceType type, PieceColour colour);
+	Square* getSquare();
 	PieceType getType();
 	PieceColour getColour();
 	virtual std::string symbol() = 0;

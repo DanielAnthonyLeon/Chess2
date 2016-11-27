@@ -1,7 +1,7 @@
 #include "Pawn.hpp"
 
-Pawn::Pawn(char file, int rank, Board *board, PieceColour colour) :
-Piece(file, rank, board, PAWN, colour)
+Pawn::Pawn(Square *square, PieceColour colour) :
+Piece(square, PAWN, colour)
 {
 	
 }
@@ -11,9 +11,13 @@ std::string Pawn::symbol() {
 }
 
 void Pawn::setSquaresInRange() {
-	Square *front = m_board->getSquare(m_file+colourIncrement(), m_rank+colourIncrement());
-	Square *frontLeft = m_board->getSquare(m_file-colourIncrement(), m_rank+colourIncrement());
-	Square *frontRight = m_board->getSquare(m_file+colourIncrement(), m_rank+colourIncrement());
+	Board *board = getSquare()->getBoard();
+	char file = getSquare()->getFile();
+	int rank = getSquare()->getRank();
+	
+	Square *front = board->getSquare(file+colourIncrement(), rank+colourIncrement());
+	Square *frontLeft = board->getSquare(file-colourIncrement(), rank+colourIncrement());
+	Square *frontRight = board->getSquare(file+colourIncrement(), rank+colourIncrement());
 	
 		// Square is on the board
 	if (front) {

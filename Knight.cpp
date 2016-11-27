@@ -1,7 +1,7 @@
 #include "Knight.hpp"
 
-Knight::Knight(char file, int rank, Board *board, PieceColour colour) :
-Piece(file, rank, board, KNIGHT, colour)
+Knight::Knight(Square *square, PieceColour colour) :
+Piece(square, KNIGHT, colour)
 {
 	
 }
@@ -11,14 +11,18 @@ std::string Knight::symbol() {
 }
 
 void Knight::setSquaresInRange() {
-	Square *upLeft = m_board->getSquare(m_rank+2, m_file-1);
-	Square *upRight = m_board->getSquare(m_rank+2, m_file+1);
-	Square *downLeft = m_board->getSquare(m_rank-2, m_file-1);
-	Square *downRight = m_board->getSquare(m_rank-2, m_file+1);
-	Square *rightUp = m_board->getSquare(m_rank+1, m_file+2);
-	Square *rightDown = m_board->getSquare(m_rank-1, m_file+2);
-	Square *leftUp = m_board->getSquare(m_rank+1, m_file-2);
-	Square *leftDown = m_board->getSquare(m_rank-1, m_file-2);
+	Board *board = getSquare()->getBoard();
+	char file = getSquare()->getFile();
+	int rank = getSquare()->getRank();
+	
+	Square *upLeft = board->getSquare(rank+2, file-1);
+	Square *upRight = board->getSquare(rank+2, file+1);
+	Square *downLeft = board->getSquare(rank-2, file-1);
+	Square *downRight = board->getSquare(rank-2, file+1);
+	Square *rightUp = board->getSquare(rank+1, file+2);
+	Square *rightDown = board->getSquare(rank-1, file+2);
+	Square *leftUp = board->getSquare(rank+1, file-2);
+	Square *leftDown = board->getSquare(rank-1, file-2);
 	
 		// Square is actually on board
 	if (upLeft) {

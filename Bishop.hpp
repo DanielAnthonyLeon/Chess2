@@ -5,7 +5,7 @@
 
 class Bishop : public Piece {
 public:
-	Bishop(char file, int rank, Board *board, PieceColour colour);
+	Bishop(Square *square, PieceColour colour);
 	std::string symbol();
 	void setSquaresInRange();
 };

@@ -1,7 +1,7 @@
 #include "King.hpp"
 
-King::King(char file, int rank, Board *board, PieceColour colour) :
-Piece(file, rank, board, KING, colour)
+King::King(Square *square, PieceColour colour) :
+Piece(square, KING, colour)
 {
 	
 }
@@ -11,11 +11,15 @@ std::string King::symbol() {
 }
 
 void King::setSquaresInRange() {
+	Board *board = getSquare()->getBoard();
+	char file = getSquare()->getFile();
+	int rank = getSquare()->getRank();
+	
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
 				// Actually a different square
 			if (i != 0 || j != 0) {
-				Square *s = m_board->getSquare(m_file+i, m_rank+j);
+				Square *s = board->getSquare(file+i, rank+j);
 					// Square is on board
 				if (s) {
 						// Square is empty
