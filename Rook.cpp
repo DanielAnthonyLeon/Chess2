@@ -1,7 +1,8 @@
 #include "Rook.hpp"
+#include "Board.hpp"
 
-Rook::Rook(Square *square, PieceColour colour) :
-Piece(square, ROOK, colour)
+Rook::Rook(PieceColour colour) :
+Piece(ROOK, colour)
 {
 	
 }
@@ -10,11 +11,7 @@ std::string Rook::symbol() {
 	return m_colour == WHITE ? "♖" : "♜";
 }
 
-void Rook::setSquaresInRange() {
-	Board *board = getSquare()->getBoard();
-	char file = getSquare()->getFile();
-	int rank = getSquare()->getRank();
-	
+void Rook::setSquaresInRange(char file, int rank, Board *board) {
 	for (int i = 1; i <= 7 ; i++) {
 		Square *s = board->getSquare(file+i, rank);
 			// Square is on board

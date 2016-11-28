@@ -1,7 +1,8 @@
 #include "Pawn.hpp"
+#include "Board.hpp"
 
-Pawn::Pawn(Square *square, PieceColour colour) :
-Piece(square, PAWN, colour)
+Pawn::Pawn(PieceColour colour) :
+Piece(PAWN, colour)
 {
 	
 }
@@ -10,11 +11,7 @@ std::string Pawn::symbol() {
 	return m_colour == WHITE ? "♙" : "♟";
 }
 
-void Pawn::setSquaresInRange() {
-	Board *board = getSquare()->getBoard();
-	char file = getSquare()->getFile();
-	int rank = getSquare()->getRank();
-	
+void Pawn::setSquaresInRange(char file, int rank, Board *board) {
 	Square *front = board->getSquare(file+colourIncrement(), rank+colourIncrement());
 	Square *frontLeft = board->getSquare(file-colourIncrement(), rank+colourIncrement());
 	Square *frontRight = board->getSquare(file+colourIncrement(), rank+colourIncrement());

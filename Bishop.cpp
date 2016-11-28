@@ -1,7 +1,8 @@
 #include "Bishop.hpp"
+#include "Board.hpp"
 
-Bishop::Bishop(Square *square, PieceColour colour) :
-Piece(square, BISHOP, colour)
+Bishop::Bishop(PieceColour colour) :
+Piece(BISHOP, colour)
 {
 	
 }
@@ -10,11 +11,7 @@ std::string Bishop::symbol() {
 	return m_colour == WHITE ? "♗" : "♝";
 }
 
-void Bishop::setSquaresInRange() {
-	Board *board = getSquare()->getBoard();
-	char file = getSquare()->getFile();
-	int rank = getSquare()->getRank();
-	
+void Bishop::setSquaresInRange(char file, int rank, Board *board) {
 	for (int i = 1; i <= 7; i++) {
 		Square *s = board->getSquare(file+i, rank+i);
 			// Square is on board

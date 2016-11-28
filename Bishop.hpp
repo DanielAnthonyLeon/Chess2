@@ -5,9 +5,9 @@
 
 class Bishop : public Piece {
 public:
-	Bishop(Square *square, PieceColour colour);
+	Bishop(PieceColour colour);
 	std::string symbol();
-	void setSquaresInRange();
+	void setSquaresInRange(char file, int rank, Board *board);
 };
 
 #endif /* Bishop_hpp */

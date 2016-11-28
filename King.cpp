@@ -1,7 +1,8 @@
 #include "King.hpp"
+#include "Board.hpp"
 
-King::King(Square *square, PieceColour colour) :
-Piece(square, KING, colour)
+King::King(PieceColour colour) :
+Piece(KING, colour)
 {
 	
 }
@@ -10,11 +11,7 @@ std::string King::symbol() {
 	return m_colour == WHITE ? "♔" : "♚";
 }
 
-void King::setSquaresInRange() {
-	Board *board = getSquare()->getBoard();
-	char file = getSquare()->getFile();
-	int rank = getSquare()->getRank();
-	
+void King::setSquaresInRange(char file, int rank, Board *board) {
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
 				// Actually a different square

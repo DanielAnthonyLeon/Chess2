@@ -5,9 +5,9 @@
 
 class King : public Piece {
 public:
-	King(Square *square, PieceColour colour);
+	King(PieceColour colour);
 	std::string symbol();
-	void setSquaresInRange();
+	void setSquaresInRange(char file, int rank, Board *board);
 };
 
 #endif /* King_hpp */

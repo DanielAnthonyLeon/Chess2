@@ -5,9 +5,9 @@
 
 class Queen : public Piece {
 public:
-	Queen(Square *square, PieceColour colour);
+	Queen(PieceColour colour);
 	std::string symbol();
-	void setSquaresInRange();
+	void setSquaresInRange(char file, int rank, Board *board);
 };
 
 #endif /* Queen_hpp */

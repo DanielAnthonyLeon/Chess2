@@ -1,7 +1,8 @@
 #include "Queen.hpp"
+#include "Board.hpp"
 
-Queen::Queen(Square *square, PieceColour colour) :
-	Piece(square, QUEEN, colour)
+Queen::Queen(PieceColour colour) :
+	Piece(QUEEN, colour)
 {
 	
 }
@@ -10,11 +11,7 @@ std::string Queen::symbol() {
 	return m_colour == WHITE ? "♕" : "♛";
 }
 
-void Queen::setSquaresInRange() {
-	Board *board = getSquare()->getBoard();
-	char file = getSquare()->getFile();
-	int rank = getSquare()->getRank();
-	
+void Queen::setSquaresInRange(char file, int rank, Board *board) {
 		// Moves like a bishop
 	
 	for (int i = 1; i <= 7; i++) {

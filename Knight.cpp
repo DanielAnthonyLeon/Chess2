@@ -1,7 +1,8 @@
 #include "Knight.hpp"
+#include "Board.hpp"
 
-Knight::Knight(Square *square, PieceColour colour) :
-Piece(square, KNIGHT, colour)
+Knight::Knight(PieceColour colour) :
+Piece(KNIGHT, colour)
 {
 	
 }
@@ -10,11 +11,7 @@ std::string Knight::symbol() {
 	return m_colour == WHITE ? "♘" : "♞";
 }
 
-void Knight::setSquaresInRange() {
-	Board *board = getSquare()->getBoard();
-	char file = getSquare()->getFile();
-	int rank = getSquare()->getRank();
-	
+void Knight::setSquaresInRange(char file, int rank, Board *board) {
 	Square *upLeft = board->getSquare(rank+2, file-1);
 	Square *upRight = board->getSquare(rank+2, file+1);
 	Square *downLeft = board->getSquare(rank-2, file-1);

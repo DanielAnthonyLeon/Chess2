@@ -1,15 +1,10 @@
 #include "Piece.hpp"
 
-Piece::Piece(Square *square, PieceType type, PieceColour colour) :
-m_square(square),
+Piece::Piece(PieceType type, PieceColour colour) :
 m_type(type),
 m_colour(colour)
 {
-	
-}
 
-Square* Piece::getSquare() {
-	return m_square;
 }
 
 PieceType Piece::getType() {
