@@ -50,6 +50,9 @@ void Board::placePiece(PieceType type, PieceColour colour, char file, int rank) 
 	Square *square = getSquare(file, rank);
 		// Place the piece on the square
 	square->placePiece(piece);
+	if (type == KING) {
+		m_kings[colour] = piece;
+	}
 }
 
 void Board::setUpPieces() {
@@ -87,23 +90,74 @@ void Board::setUpPieces() {
 	
 		// Kings
 	placePiece(KING, WHITE, 'e', 1);
-	placePiece(KING, WHITE, 'e', 8);
+	placePiece(KING, BLACK, 'e', 8);
 }
 
 void Board::movePiece(Square *start, Square *destination) {
 	Piece *piece = start->getPiece();
-	start->removePiece();
+	start->pickUpPiece();
 	destination->placePiece(piece);
 }
 
-std::ostream& operator<<(std::ostream& out, const Board& b) {
-	for (int rank = 8; rank >= 1; rank--) {
-		out << rank;
-		for (char file = 'a'; file <= 'h'; file++) {
-			out << ' ' << b.getSquare(file, rank)->symbol();
+void Board::setPossibleMoves() {
+	for (char file = 'a'; file <= 'h'; file++) {
+		for (int rank = 1; rank <= 8; rank++) {
+			Square *square = getSquare(file, rank);
+			Piece *piece = square->getPiece();
+				// Square is occupied
+			if (piece) {
+				// It is colour's turn
+				piece->setSquaresInRange(this);
+			}
 		}
-		out << std::endl;
 	}
-	out << "  a b c d e f g h";
-	return out;
+}
+
+bool Board::isMoveSemiLegal(Square *start, Square *destination) {
+	Piece *piece = start->getPiece();
+		// There actually is a piece on the start square
+	if (piece) {
+		return piece->isMoveSemiLegal(destination);
+	}
+	return false;
+}
+
+bool Board::isInCheck(PieceColour colour) {
+	Piece *king = m_kings[colour];
+	return (king->numberOfAttackers() > 0);
+}
+
+void Board::printMoves() {
+	for (char file = 'a'; file <= 'h'; file++) {
+		for (int rank = 1; rank <= 8; rank++) {
+			Piece *piece = getSquare(file, rank)->getPiece();
+			if (piece) {
+				piece->printMoves();
+			}
+		}
+	}
+}
+
+void Board::printBoard(PieceColour colour) {
+	if (colour == WHITE) {
+		for (int rank = 8; rank >= 1; rank--) {
+			std::cout << rank;
+			for (char file = 'a'; file <= 'h'; file++) {
+				std::cout << ' ' << getSquare(file, rank)->symbol();
+			}
+			std::cout << std::endl;
+		}
+		std::cout << "  a b c d e f g h";
+	}
+	else {
+		for (int rank = 1; rank <= 8; rank++) {
+			std::cout << rank;
+			for (char file = 'h'; file >= 'a'; file--) {
+				std::cout << ' ' << getSquare(file, rank)->symbol();
+			}
+			std::cout << std::endl;
+		}
+		std::cout << "  h g f e d c b a";
+	}
+	std::cout << std::endl;
 }

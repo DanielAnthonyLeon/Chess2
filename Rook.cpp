@@ -11,18 +11,27 @@ std::string Rook::symbol() {
 	return m_colour == WHITE ? "♖" : "♜";
 }
 
-void Rook::setSquaresInRange(char file, int rank, Board *board) {
+void Rook::setSquaresInRange(Board *board) {
+		// Empty the vector to start fresh
+	Piece::setSquaresInRange(board);
+	
+	char file = getSquare()->getFile();
+	int rank = getSquare()->getRank();
+	
 	for (int i = 1; i <= 7 ; i++) {
-		Square *s = board->getSquare(file+i, rank);
+		Square *square = board->getSquare(file+i, rank);
 			// Square is on board
-		if (s) {
+		if (square) {
 				// Square is unoccupied
-			if (!s->isOccupied()) {
-				m_squaresInRange.push_back(s);
+			if (!square->isOccupied()) {
+				m_squaresInRange.push_back(square);
 			}
 				// Square is occupied by opposite coloured piece
-			else if (s->getPiece()->getColour() != m_colour) {
-				m_squaresInRange.push_back(s);
+			else if (square->getPiece()->getColour() != getColour()) {
+				m_squaresInRange.push_back(square);
+				Piece *piece = square->getPiece();
+				m_piecesAttacking.push_back(piece);
+				piece->beingAttackedBy(this);
 					// Rook cannot proceed any further
 				break;
 			}
@@ -38,13 +47,16 @@ void Rook::setSquaresInRange(char file, int rank, Board *board) {
 	}
 	
 	for (int i = 1; i <= 7 ; i++) {
-		Square *s = board->getSquare(file, rank+i);
-		if (s) {
-			if (!s->isOccupied()) {
-				m_squaresInRange.push_back(s);
+		Square *square = board->getSquare(file, rank+i);
+		if (square) {
+			if (!square->isOccupied()) {
+				m_squaresInRange.push_back(square);
 			}
-			else if (s->getPiece()->getColour() != m_colour) {
-				m_squaresInRange.push_back(s);
+			else if (square->getPiece()->getColour() != getColour()) {
+				m_squaresInRange.push_back(square);
+				Piece *piece = square->getPiece();
+				m_piecesAttacking.push_back(piece);
+				piece->beingAttackedBy(this);
 				break;
 			}
 			else {
@@ -57,13 +69,16 @@ void Rook::setSquaresInRange(char file, int rank, Board *board) {
 	}
 	
 	for (int i = 1; i <= 7 ; i++) {
-		Square *s = board->getSquare(file-i, rank);
-		if (s) {
-			if (!s->isOccupied()) {
-				m_squaresInRange.push_back(s);
+		Square *square = board->getSquare(file-i, rank);
+		if (square) {
+			if (!square->isOccupied()) {
+				m_squaresInRange.push_back(square);
 			}
-			else if (s->getPiece()->getColour() != m_colour) {
-				m_squaresInRange.push_back(s);
+			else if (square->getPiece()->getColour() != getColour()) {
+				m_squaresInRange.push_back(square);
+				Piece *piece = square->getPiece();
+				m_piecesAttacking.push_back(piece);
+				piece->beingAttackedBy(this);
 				break;
 			}
 			else {
@@ -76,13 +91,16 @@ void Rook::setSquaresInRange(char file, int rank, Board *board) {
 	}
 	
 	for (int i = 1; i <= 7 ; i++) {
-		Square *s = board->getSquare(file, rank-i);
-		if (s) {
-			if (!s->isOccupied()) {
-				m_squaresInRange.push_back(s);
+		Square *square = board->getSquare(file, rank-i);
+		if (square) {
+			if (!square->isOccupied()) {
+				m_squaresInRange.push_back(square);
 			}
-			else if (s->getPiece()->getColour() != m_colour) {
-				m_squaresInRange.push_back(s);
+			else if (square->getPiece()->getColour() != getColour()) {
+				m_squaresInRange.push_back(square);
+				Piece *piece = square->getPiece();
+				m_piecesAttacking.push_back(piece);
+				piece->beingAttackedBy(this);
 				break;
 			}
 			else {

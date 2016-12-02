@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <string>
+#include <iostream>
 
 class Piece;
 
@@ -26,7 +27,8 @@ public:
 	bool isOccupied();
 	bool onBoard();
 	void placePiece(Piece *piece);
-	void removePiece();
+	void pickUpPiece();
+	friend std::ostream& operator<<(std::ostream& out, const Square& square);
 };
 
 #endif /* Square_hpp */

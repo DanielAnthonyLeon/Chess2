@@ -7,7 +7,8 @@ class Pawn : public Piece {
 public:
 	Pawn(PieceColour colour);
 	std::string symbol();
-	void setSquaresInRange(char file, int rank, Board *board);
+	bool onStartingRank();
+	void setSquaresInRange(Board *board);
 };
 
 #endif /* Pawn_hpp */

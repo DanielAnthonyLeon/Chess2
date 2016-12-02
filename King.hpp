@@ -7,7 +7,7 @@ class King : public Piece {
 public:
 	King(PieceColour colour);
 	std::string symbol();
-	void setSquaresInRange(char file, int rank, Board *board);
+	void setSquaresInRange(Board *board);
 };
 
 #endif /* King_hpp */

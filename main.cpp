@@ -1,10 +1,9 @@
-#include "Board.hpp"
+#include "Game.hpp"
 
 using namespace std;
 
 int main() {
-	Board board;
-	board.setUpPieces();
-	cout << board << endl;
+	Game game;
+	game.playGame();
 	return 0;
 }

@@ -11,7 +11,13 @@ std::string King::symbol() {
 	return m_colour == WHITE ? "♔" : "♚";
 }
 
-void King::setSquaresInRange(char file, int rank, Board *board) {
+void King::setSquaresInRange(Board *board) {
+		// Empty the vector to start fresh
+	Piece::setSquaresInRange(board);
+	
+	char file = getSquare()->getFile();
+	int rank = getSquare()->getRank();
+	
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
 				// Actually a different square

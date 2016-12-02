@@ -51,9 +51,19 @@ bool Square::onBoard() {
 }
 
 void Square::placePiece(Piece *piece) {
+	Piece *currentPiece = getPiece();
+	if (currentPiece) {
+		delete currentPiece;
+	}
 	m_piece = piece;
+	piece->placeOnBoard(this);
 }
 
-void Square::removePiece() {
+void Square::pickUpPiece() {
 	m_piece = NULL;
+}
+
+std::ostream& operator<<(std::ostream& out, const Square& square) {
+	out << square.m_file << square.m_rank;
+	return out;
 }

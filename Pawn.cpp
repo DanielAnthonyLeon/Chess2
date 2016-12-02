@@ -11,10 +11,34 @@ std::string Pawn::symbol() {
 	return m_colour == WHITE ? "♙" : "♟";
 }
 
-void Pawn::setSquaresInRange(char file, int rank, Board *board) {
-	Square *front = board->getSquare(file+colourIncrement(), rank+colourIncrement());
+bool Pawn::onStartingRank() {
+	int rank = getSquare()->getRank();
+	if (getColour() == WHITE) {
+		return rank == 2;
+	}
+	else {
+		return rank == 7;
+	}
+}
+
+void Pawn::setSquaresInRange(Board *board) {
+		// Empty the vector to start fresh
+	Piece::setSquaresInRange(board);
+	
+	char file = getSquare()->getFile();
+	int rank = getSquare()->getRank();
+	
+	Square *front = board->getSquare(file, rank+colourIncrement());
 	Square *frontLeft = board->getSquare(file-colourIncrement(), rank+colourIncrement());
 	Square *frontRight = board->getSquare(file+colourIncrement(), rank+colourIncrement());
+	
+		// If pawn hasn't moved yet
+	if (onStartingRank()) {
+		Square *twoInFront = board->getSquare(file, rank+2*colourIncrement());
+		if (!front->isOccupied() && !twoInFront->isOccupied()) {
+			m_squaresInRange.push_back(twoInFront);
+		}
+	}
 	
 		// Square is on the board
 	if (front) {
@@ -24,20 +48,27 @@ void Pawn::setSquaresInRange(char file, int rank, Board *board) {
 		}
 	}
 	if (frontLeft) {
-		if (!frontLeft->isOccupied()) {
-			m_squaresInRange.push_back(frontLeft);
-		}
-			// Square has a piece that can be captured
-		else if (frontLeft->getPiece()->getColour() != m_colour) {
-			m_squaresInRange.push_back(frontLeft);
+		Piece *piece = frontLeft->getPiece();
+			// There is a piece diagonal to the pawn
+		if (piece) {
+				// The piece is of opposite colour
+			if (piece->getColour() != getColour()) {
+				m_squaresInRange.push_back(frontLeft);
+				Piece *piece = frontLeft->getPiece();
+				m_piecesAttacking.push_back(piece);
+				piece->beingAttackedBy(this);
+			}
 		}
 	}
 	if (frontRight) {
-		if (!frontRight->isOccupied()) {
-			m_squaresInRange.push_back(frontRight);
-		}
-		else if (frontRight->getPiece()->getColour() != m_colour) {
-			m_squaresInRange.push_back(frontRight);
+		Piece *piece = frontRight->getPiece();
+		if (piece) {
+			if (piece->getColour() != getColour()) {
+				m_squaresInRange.push_back(frontRight);
+				Piece *piece = frontLeft->getPiece();
+				m_piecesAttacking.push_back(piece);
+				piece->beingAttackedBy(this);
+			}
 		}
 	}
 }

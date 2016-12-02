@@ -7,7 +7,7 @@ class Rook : public Piece {
 public:
 	Rook(PieceColour colour);
 	std::string symbol();
-	void setSquaresInRange(char file, int rank, Board *board);
+	void setSquaresInRange(Board *board);
 };
 
 #endif /* Rook_hpp */
