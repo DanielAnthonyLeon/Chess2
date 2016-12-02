@@ -65,7 +65,7 @@ void Pawn::setSquaresInRange(Board *board) {
 		if (piece) {
 			if (piece->getColour() != getColour()) {
 				m_squaresInRange.push_back(frontRight);
-				Piece *piece = frontLeft->getPiece();
+				Piece *piece = frontRight->getPiece();
 				m_piecesAttacking.push_back(piece);
 				piece->beingAttackedBy(this);
 			}

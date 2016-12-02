@@ -30,18 +30,24 @@ protected:
 	std::vector<Square*> m_squaresInRange;
 	std::vector<Piece*> m_piecesAttacking;
 	std::vector<Piece*> m_piecesAttackedBy;
+	std::vector<Square*> m_legalSquares;
 public:
 	Piece(PieceType type, PieceColour colour);
 	PieceType getType();
 	PieceColour getColour();
 	Square* getSquare();
-	void placeOnBoard(Square *square);
+	bool isAlive();
+	void kill();
+	void pickup();
+	void place(Square *square);
 	virtual std::string symbol() = 0;
 	int colourIncrement();
 	virtual void setSquaresInRange(Board *board);
 	void beingAttackedBy(Piece *piece);
-	int numberOfAttackers();
+	size_t numberOfAttackers();
 	bool isMoveSemiLegal(Square *destination);
+	void setLegalMoves(Board *board);
+	size_t numberOfLegalMoves();
 	void printMoves();
 };
 

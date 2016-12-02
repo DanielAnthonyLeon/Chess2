@@ -17,7 +17,7 @@ bool Game::makeMove(char file1, int rank1, char file2, int rank2) {
 	
 		// Make sure squares are actually on board
 	if (start && destination) {
-		if (m_board->isMoveSemiLegal(start, destination)) {
+		if (m_board->isMoveLegal(start, destination)) {
 			m_board->movePiece(start, destination);
 			return true;
 		}
@@ -36,11 +36,15 @@ void Game::playGame() {
 	int rank2;
 	
 	while (true) {
-		m_board->setPossibleMoves();
+		m_board->setLegalMoves();
 		m_board->printMoves();
 		m_board->printBoard(m_turn);
 		
 		if (m_board->isInCheck(m_turn)) {
+			if (m_board->isCheckMate(m_turn)) {
+				cout << "Checkmate!\n";
+				return;
+			}
 			cout << "Check!\n";
 		}
 		
@@ -48,10 +52,12 @@ void Game::playGame() {
 		
 			// Get the first square
 		cin >> file1;
+		
 			// q to quit
 		if (file1 == 'q') {
 			break;
 		}
+		
 		cin >> rank1;
 		Square *start = m_board->getSquare(file1, rank1);
 		if (start) {

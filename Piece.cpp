@@ -1,5 +1,6 @@
 #include "Piece.hpp"
 #include "Square.hpp"
+#include "Board.hpp"
 
 Piece::Piece(PieceType type, PieceColour colour) :
 m_type(type),
@@ -20,8 +21,29 @@ Square* Piece::getSquare() {
 	return m_square;
 }
 
-void Piece::placeOnBoard(Square *square) {
+bool Piece::isAlive() {
+	return m_square != NULL;
+}
+
+void Piece::kill() {
+	m_square = NULL;
+}
+
+void Piece::pickup() {
+	m_square->pickUpPiece();
+	m_square = NULL;
+}
+
+void Piece::place(Square *square) {
+		// Capture piece if the square is occupied
+	Piece *previousPiece = square->getPiece();
+	if (previousPiece) {
+		previousPiece->kill();
+	}
+	
+		// Piece now occupies the square
 	m_square = square;
+	m_square->placePiece(this);
 }
 
 int Piece::colourIncrement() {
@@ -39,7 +61,7 @@ void Piece::beingAttackedBy(Piece *piece) {
 	m_piecesAttackedBy.push_back(piece);
 }
 
-int Piece::numberOfAttackers() {
+size_t Piece::numberOfAttackers() {
 	return m_piecesAttackedBy.size();
 }
 
@@ -52,10 +74,23 @@ bool Piece::isMoveSemiLegal(Square *destination) {
 	return false;
 }
 
+void Piece::setLegalMoves(Board *board) {
+	m_legalSquares.erase(m_legalSquares.begin(), m_legalSquares.begin()+m_legalSquares.size());
+	for (Square *square : m_squaresInRange) {
+		if (board->isMoveLegal(getSquare(), square)) {
+			m_legalSquares.push_back(square);
+		}
+	}
+}
+
+size_t Piece::numberOfLegalMoves() {
+	return m_legalSquares.size();
+}
+
 void Piece::printMoves() {
 	char file = getSquare()->getFile();
 	int rank = getSquare()->getRank();
-	for (Square *square : m_squaresInRange) {
+	for (Square *square : m_legalSquares) {
 		std::cout << file << rank << " ";
 		std::cout << square->getFile() << square->getRank() << std::endl;
 	}

@@ -9,13 +9,19 @@ Board::Board() {
 }
 
 Board::~Board() {
+		// Destroy the board
 	for (char file = 'a'; file <= 'h'; file++) {
 		for (int rank = 1; rank <= 8; rank++) {
 			Square *square = getSquare(file, rank);
-			Piece *piece = square->getPiece();
-			delete piece;
 			delete square;
 		}
+	}
+		// Destroy the pieces
+	for (Piece *whitePiece : m_pieces[WHITE]) {
+		delete whitePiece;
+	}
+	for (Piece *blackPiece : m_pieces[BLACK]) {
+		delete blackPiece;
 	}
 }
 
@@ -28,20 +34,29 @@ Square* Board::getSquare(char file, int rank) const {
 }
 
 Piece* Board::createPiece(PieceType type, PieceColour colour) {
+	Piece *piece;
 	switch (type) {
 		case PAWN:
-			return new Pawn(colour);
+			piece = new Pawn(colour);
+			break;
 		case KNIGHT:
-			return new Knight(colour);
+			piece = new Knight(colour);
+			break;
 		case BISHOP:
-			return new Bishop(colour);
+			piece = new Bishop(colour);
+			break;
 		case ROOK:
-			return new Rook(colour);
+			piece = new Rook(colour);
+			break;
 		case QUEEN:
-			return new Queen(colour);
+			piece = new Queen(colour);
+			break;
 		case KING:
-			return new King(colour);
+			piece = new King(colour);
+			break;
 	}
+	m_pieces[colour].push_back(piece);
+	return piece;
 }
 
 void Board::placePiece(PieceType type, PieceColour colour, char file, int rank) {
@@ -49,7 +64,7 @@ void Board::placePiece(PieceType type, PieceColour colour, char file, int rank) 
 	Piece *piece = createPiece(type, colour);
 	Square *square = getSquare(file, rank);
 		// Place the piece on the square
-	square->placePiece(piece);
+	piece->place(square);
 	if (type == KING) {
 		m_kings[colour] = piece;
 	}
@@ -94,23 +109,25 @@ void Board::setUpPieces() {
 }
 
 void Board::movePiece(Square *start, Square *destination) {
-	Piece *piece = start->getPiece();
-	start->pickUpPiece();
-	destination->placePiece(piece);
+	if (start != destination) {
+		Piece *piece = start->getPiece();
+		piece->pickup();
+		piece->place(destination);
+	}
 }
 
 void Board::setPossibleMoves() {
-	for (char file = 'a'; file <= 'h'; file++) {
-		for (int rank = 1; rank <= 8; rank++) {
-			Square *square = getSquare(file, rank);
-			Piece *piece = square->getPiece();
-				// Square is occupied
-			if (piece) {
-				// It is colour's turn
-				piece->setSquaresInRange(this);
-			}
+	for (Piece *piece : m_pieces[WHITE]) {
+		if (piece->isAlive()) {
+			piece->setSquaresInRange(this);
 		}
 	}
+	for (Piece *piece : m_pieces[BLACK]) {
+		if (piece->isAlive()) {
+			piece->setSquaresInRange(this);
+		}
+	}
+
 }
 
 bool Board::isMoveSemiLegal(Square *start, Square *destination) {
@@ -127,13 +144,59 @@ bool Board::isInCheck(PieceColour colour) {
 	return (king->numberOfAttackers() > 0);
 }
 
+bool Board::isMoveLegal(Square *start, Square *destination) {
+	if (isMoveSemiLegal(start, destination)) {
+		Piece *piece = start->getPiece();
+		PieceColour colour = piece->getColour();
+			// Move piece to see if it produces check
+		movePiece(start, destination);
+			// Set the moves for this new board
+		setPossibleMoves();
+			// Move does not put own king in check
+		if (!isInCheck(colour)) {
+				// Return the piece to its original square
+			movePiece(destination, start);
+				// Reset the moves
+			setPossibleMoves();
+			return true;
+		}
+		else {
+			movePiece(destination, start);
+			setPossibleMoves();
+			return false;
+		}
+	}
+	return false;
+}
+
+void Board::setLegalMoves() {
+	setPossibleMoves();
+	for (Piece *piece : m_pieces[WHITE]) {
+		if (piece->isAlive()) {
+			piece->setLegalMoves(this);
+		}
+	}
+	for (Piece *piece : m_pieces[BLACK]) {
+		if (piece->isAlive()) {
+			piece->setLegalMoves(this);
+		}
+	}
+}
+
+	// Call this from within isInCheck test
+bool Board::isCheckMate(PieceColour colour) {
+	return m_kings[colour]->numberOfLegalMoves() == 0;
+}
+
 void Board::printMoves() {
-	for (char file = 'a'; file <= 'h'; file++) {
-		for (int rank = 1; rank <= 8; rank++) {
-			Piece *piece = getSquare(file, rank)->getPiece();
-			if (piece) {
-				piece->printMoves();
-			}
+	for (Piece *piece : m_pieces[WHITE]) {
+		if (piece->isAlive()) {
+			piece->printMoves();
+		}
+	}
+	for (Piece *piece : m_pieces[BLACK]) {
+		if (piece->isAlive()) {
+			piece->printMoves();
 		}
 	}
 }

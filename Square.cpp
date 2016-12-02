@@ -51,12 +51,7 @@ bool Square::onBoard() {
 }
 
 void Square::placePiece(Piece *piece) {
-	Piece *currentPiece = getPiece();
-	if (currentPiece) {
-		delete currentPiece;
-	}
 	m_piece = piece;
-	piece->placeOnBoard(this);
 }
 
 void Square::pickUpPiece() {
